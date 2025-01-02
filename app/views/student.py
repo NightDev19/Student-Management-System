@@ -22,8 +22,13 @@ def add_student():
         email = request.form['email']
         age = int(request.form['age'])
         course = request.form['course']
+        
+        # Find the next available ID
+        last_student = Student.query.order_by(Student.id.desc()).first()
+        next_id = (last_student.id + 1) if last_student else 1
 
-        new_student = Student(name=name, email=email, age=age, course=course)
+
+        new_student = Student(id=next_id,name=name, email=email, age=age, course=course)
         db.session.add(new_student)
         db.session.commit()
         flash('Student added successfully!')
